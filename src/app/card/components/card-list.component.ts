@@ -10,4 +10,5 @@ export class CardListComponent {
 
     @Input() items: any[] = [];
     @Input() listName: string;
+    @Input() navigateTo: any;
 }
