@@ -1,23 +1,36 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{cardDeckGroup | titlecase}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <app-search (searchCompleted)="hydrateCards($event)"
+              (searchStarted)="handleSearchStart()"
+              [items]="copyOfCards"
+              [filteredProperty]="'name'">
+  </app-search>
+  <ion-spinner text-center *ngIf="isLoading"></ion-spinner>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list *ngIf="cards.length > 0">
     <ion-card *ngFor="let card of cards">
       <ion-card-header text-wrap="">
         <ion-card-subtitle>
           {{card.cardSet}}
+          <ion-icon (click)="makeFavoriteCard(card)" [ngClass]="card.favorite ? 'favorite' : 'normal'" name="flame" class="like-icon"></ion-icon>
         </ion-card-subtitle>
         <ion-card-title>
           {{card.name}}
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <div>{{card.text}}</div>
-        <ion-button size="medium" expand="full">
+        <div [innerHTML]="card.text"></div>
+        <ion-button [href]="'/tabs/(card:card/' + card.name + ')'" size="medium" expand="full">
           See Details
         </ion-button>
       </ion-card-content>

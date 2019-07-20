@@ -20,4 +20,6 @@ export interface Card {
     cost: number;
     attack: number;
     rarity: string;
+    title: string;
+    favorite: boolean;
 }

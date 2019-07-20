@@ -17,11 +17,19 @@ export class CardService {
         this.headers = this.headers.append('X-RapidAPI-Key', this.API_KEY);
     }
 
+    public replaceCardTextLine(text: string) {
+        return text ? text.replace(new RegExp('\\\\n', 'g'), ' ') : 'No Description';
+    }
+
     public getAllCardDecks(): Observable<CardDeck[]> {
         return this.http.get<CardDeck[]>(`${this.HS_API_URL}/info`, {headers: this.headers});
     }
 
-    public getCardsByDeck(cardDeckGroup: string, cardDeck: string): Observable<any> {
+    public getCardsByDeck(cardDeckGroup: string, cardDeck: string): Observable<Card[]> {
         return this.http.get<Card[]>(`${this.HS_API_URL}/cards/${cardDeckGroup}/${cardDeck}`, {headers: this.headers});
+    }
+
+    public getCardByName(name: string): Observable<Card[]> {
+        return this.http.get<Card[]>(`${this.HS_API_URL}/cards/${name}`, {headers: this.headers});
     }
 }
